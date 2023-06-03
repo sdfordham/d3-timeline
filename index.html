@@ -23,7 +23,9 @@
             .domain([d3.min(eras, d => d.start), d3.max(eras, d => d.finish)])
             .range([0, width]);
 
-          svg.selectAll('rect')
+          svg.append('g')
+            .attr('id', 'eras')
+            .selectAll('rect')
             .data(eras)
             .enter()
             .append('rect')
