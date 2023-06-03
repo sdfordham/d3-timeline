@@ -1,0 +1,19 @@
+{
+	"eras": [
+		{
+			"era": "kingdom",
+			"start": -753,
+			"finish": -509
+		},
+		{
+			"era": "republic",
+			"start": -509,
+			"finish": -27
+		},
+		{
+			"era": "empire",
+			"start": -27,
+			"finish": 476
+		}
+	]
+}
