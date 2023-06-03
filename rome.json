@@ -3,17 +3,20 @@
 		{
 			"era": "kingdom",
 			"start": -753,
-			"finish": -509
+			"finish": -509,
+			"color": "red"
 		},
 		{
 			"era": "republic",
 			"start": -509,
-			"finish": -27
+			"finish": -27,
+			"color": "green"
 		},
 		{
 			"era": "empire",
 			"start": -27,
-			"finish": 476
+			"finish": 476,
+			"color": "blue"
 		}
 	]
 }
