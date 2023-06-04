@@ -1,22 +1,22 @@
 {
 	"eras": [
 		{
-			"era": "kingdom",
+			"id": "kingdom",
 			"start": -753,
 			"finish": -509,
-			"color": "red"
+			"text": "The Kingdom of Rome"
 		},
 		{
-			"era": "republic",
+			"id": "republic",
 			"start": -509,
 			"finish": -27,
-			"color": "green"
+			"text": "The Roman Republic"
 		},
 		{
-			"era": "empire",
+			"id": "empire",
 			"start": -27,
 			"finish": 476,
-			"color": "blue"
+			"text": "The Roman Empire"
 		}
 	]
 }
