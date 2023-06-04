@@ -9,10 +9,12 @@
     <script type='text/javascript'>
       d3.json('rome.json').then(
         res => {
-          const eras = res.eras;
           const svgHeight = 150;
           const svgWidth = 1000;
           const eraHeight = 75;
+          const erasColorCycle = ['#4e79a7','#f28e2c','#e15759','#76b7b2','#59a14f','#edc949','#af7aa1','#ff9da7','#9c755f','#bab0ab'];
+
+          const eras = res.eras;
 
           var svg = d3.select('body')
             .append('svg')
@@ -35,13 +37,21 @@
             .attr('y', 0)
             .attr('width', d => xScale(d.finish) - xScale(d.start))
             .attr('height', eraHeight)
-            .attr('fill', d => d.color)
+            .attr('fill', (d, i) => erasColorCycle[i % erasColorCycle.length])
             .attr('stroke', 'black')
-            .attr('stroke-width', 0.025);
+            .attr('stroke-width', 0.025)
+            .on('mouseover', function() {
+              d3.select(this)
+                .attr('fill-opacity', 0.5);
+            })
+            .on('mouseout', function() {
+              d3.select(this)
+                .attr('fill-opacity', null);
+            });
 
           svg.append('g')
             .attr('class', 'x-axis')
-            .attr("transform", "translate(0," + eraHeight + ")")
+            .attr('transform', 'translate(0,' + eraHeight + ')')
             .call(xAxis);
         }
       );
