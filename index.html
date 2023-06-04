@@ -9,22 +9,24 @@
     <script type='text/javascript'>
       d3.json('rome.json').then(
         res => {
-          var eras = res.eras;
-
-          var height = 100;
-          var width = 1000;
+          const eras = res.eras;
+          const svgHeight = 150;
+          const svgWidth = 1000;
+          const eraHeight = 75;
 
           var svg = d3.select('body')
             .append('svg')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('width', svgWidth)
+            .attr('height', svgHeight);
 
           var xScale = d3.scaleLinear()
             .domain([d3.min(eras, d => d.start), d3.max(eras, d => d.finish)])
-            .range([0, width]);
+            .range([0, svgWidth]);
+          
+          var xAxis = d3.axisBottom(xScale);
 
           svg.append('g')
-            .attr('id', 'eras')
+            .attr('class', 'eras')
             .selectAll('rect')
             .data(eras)
             .enter()
@@ -32,10 +34,15 @@
             .attr('x', d => xScale(d.start))
             .attr('y', 0)
             .attr('width', d => xScale(d.finish) - xScale(d.start))
-            .attr('height', height)
+            .attr('height', eraHeight)
             .attr('fill', d => d.color)
             .attr('stroke', 'black')
             .attr('stroke-width', 0.025);
+
+          svg.append('g')
+            .attr('class', 'x-axis')
+            .attr("transform", "translate(0," + eraHeight + ")")
+            .call(xAxis);
         }
       );
     </script>
