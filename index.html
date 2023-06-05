@@ -4,6 +4,9 @@
     <meta charset='utf-8'>
     <title>D3 Page Template</title>
     <script src='https://d3js.org/d3.v7.min.js'></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
   </head>
   <body>
     <script type='text/javascript'>
@@ -48,12 +51,28 @@
                 .attr('fill-opacity', null);
             });
 
+          var gErasText = svg.append('g')
+            .attr('class', 'eras-text')
+            .selectAll('text')
+            .data(eras)
+            .enter()
+            .append('text')
+            .attr('x', d => xScale(d.start) + 0.5 * (xScale(d.finish) - xScale(d.start)))
+            .attr('y', -5)
+            .style("text-anchor", "middle")
+            .text(d => d.text)
+            .attr("font-family", "Montserrat")
+            .attr("font-size", "20px")
+            .attr("font-weight", "900")
+            .attr("fill", "white");
+
           var xAxis = svg.append('g')
             .attr('class', 'x-axis')
             .call(d3.axisBottom(xScale));
 
           function zooming({transform}) {
             gEras.attr('transform', transform)
+            gErasText.attr('transform', transform)
             xAxis.attr('transform', transform)
           }
 
