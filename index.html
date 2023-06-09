@@ -70,10 +70,27 @@
             .attr('class', 'x-axis')
             .call(d3.axisBottom(xScale));
 
+          function roundedRect(x, y, l, h, r) {
+            return "M " + (x + r) + " " + y + " " +
+            "L " + (x + l - r) + " " + y + " " +
+            "Q " + (x + l) + " " + y + " " + (x + l) + " " + (y - r) + " " +
+            "L " + (x + l) + " " + (y - h + r) + " " +
+            "Q " + (x + l) + " " + (y - h) + " " + (x + l - r) + " " + (y - h) + " " +
+            "L " + (x + r) + " " + (y - h) + " " +
+            "Q " + x + " " + (y - h) + " " + x + " " + (y - h + r) + " " +
+            "L " + x + " " + (y - r) + " " +
+            "Q " + x + " " + y + " " + (x + r) + " " + y
+          }
+
+          var ageG = svg.append('g')
+            .append('path')
+            .attr('d', roundedRect(0, -30, 90, 15, 3));
+
           function zooming({transform}) {
             gEras.attr('transform', transform)
             gErasText.attr('transform', transform)
             xAxis.attr('transform', transform)
+            ageG.attr('transform', transform)
           }
 
           var zoom = d3.zoom()
