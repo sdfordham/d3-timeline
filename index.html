@@ -1,73 +1,78 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <title>D3 Page Template</title>
-    <script src='https://d3js.org/d3.v7.min.js'></script>
+    <meta charset="utf-8">
+    <title>D3 Historical Timeline</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
   </head>
   <body>
-    <script type='text/javascript'>
-      d3.json('rome.json').then(
+    <script type="text/javascript">
+      d3.json("rome.json").then(
         res => {
           const svgHeight = 500;
           const svgWidth = 2000;
           const eraHeight = 75;
-          const erasColorCycle = ['#4e79a7','#f28e2c','#e15759','#76b7b2','#59a14f','#edc949','#af7aa1','#ff9da7','#9c755f','#bab0ab'];
+          const erasColorCycle = ["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"];
+          const font = "Montserrat";
+          const ageYPos = -30;
+          const ageHeight = 15;
+          const ageRounded = 3; 
 
           const eras = res.eras;
+          const ages = res.ages;
 
-          var svg = d3.select('body')
-            .append('svg')
-            .attr('width', svgWidth)
-            .attr('height', svgHeight)
-            .attr('viewBox', [-10, -svgHeight - 10, svgWidth + 50, svgHeight + 50]);
+          var svg = d3.select("body")
+            .append("svg")
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
+            .attr("viewBox", [-10, -svgHeight - 10, svgWidth + 50, svgHeight + 50]);
 
           var xScale = d3.scaleLinear()
             .domain([d3.min(eras, d => d.start), d3.max(eras, d => d.finish)])
             .range([0, svgWidth]);
           
-          var gEras = svg.append('g')
-            .attr('class', 'eras')
-            .selectAll('rect')
+          var gEras = svg.append("g")
+            .attr("class", "eras")
+            .selectAll("rect")
             .data(eras)
             .enter()
-            .append('rect')
-            .attr('x', d => xScale(d.start))
-            .attr('y', -eraHeight)
-            .attr('width', d => xScale(d.finish) - xScale(d.start))
-            .attr('height', eraHeight)
-            .attr('fill', (d, i) => erasColorCycle[i % erasColorCycle.length])
-            .attr('stroke', 'black')
-            .attr('stroke-width', 0.025)
-            .on('mouseover', function() {
+            .append("rect")
+            .attr("x", d => xScale(d.start))
+            .attr("y", -eraHeight)
+            .attr("width", d => xScale(d.finish) - xScale(d.start))
+            .attr("height", eraHeight)
+            .attr("fill", (d, i) => erasColorCycle[i % erasColorCycle.length])
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.025)
+            .on("mouseover", function() {
               d3.select(this)
-                .attr('fill-opacity', 0.5);
+                .attr("fill-opacity", 0.5);
             })
-            .on('mouseout', function() {
+            .on("mouseout", function() {
               d3.select(this)
-                .attr('fill-opacity', null);
+                .attr("fill-opacity", null);
             });
 
-          var gErasText = svg.append('g')
-            .attr('class', 'eras-text')
-            .selectAll('text')
+          var gErasText = svg.append("g")
+            .attr("class", "eras-text")
+            .selectAll("text")
             .data(eras)
             .enter()
-            .append('text')
-            .attr('x', d => xScale(d.start) + 0.5 * (xScale(d.finish) - xScale(d.start)))
-            .attr('y', -5)
+            .append("text")
+            .attr("x", d => xScale(d.start) + 0.5 * (xScale(d.finish) - xScale(d.start)))
+            .attr("y", -5)
             .style("text-anchor", "middle")
             .text(d => d.text)
-            .attr("font-family", "Montserrat")
+            .attr("font-family", font)
             .attr("font-size", "20px")
             .attr("font-weight", "900")
             .attr("fill", "white");
 
-          var xAxis = svg.append('g')
-            .attr('class', 'x-axis')
+          var xAxis = svg.append("g")
+            .attr("class", "x-axis")
             .call(d3.axisBottom(xScale));
 
           function roundedRect(x, y, l, h, r) {
@@ -82,21 +87,35 @@
             "Q " + x + " " + y + " " + (x + r) + " " + y
           }
 
-          var ageG = svg.append('g')
-            .append('path')
-            .attr('d', roundedRect(0, -30, 90, 15, 3));
+          var ageG = svg.append("g")
+            .attr("class", "ages")
+            .selectAll("path")
+            .data(ages)
+            .enter()
+            .append("path")
+            .attr("d", d => roundedRect(xScale(d.start), ageYPos, xScale(d.finish) - xScale(d.start), ageHeight, ageRounded))
+            .attr("fill", (d, i) => erasColorCycle[i % erasColorCycle.length])
+            .attr("fill-opacity", 0.75)
+            .on("mouseover", function() {
+              d3.select(this)
+                .attr("fill-opacity", 0.5);
+            })
+            .on("mouseout", function() {
+              d3.select(this)
+                .attr("fill-opacity", 0.75);
+            });
 
           function zooming({transform}) {
-            gEras.attr('transform', transform)
-            gErasText.attr('transform', transform)
-            xAxis.attr('transform', transform)
-            ageG.attr('transform', transform)
+            gEras.attr("transform", transform)
+            gErasText.attr("transform", transform)
+            xAxis.attr("transform", transform)
+            ageG.attr("transform", transform)
           }
 
           var zoom = d3.zoom()
             .scaleExtent([1, 8])
             .extent([[0, 0], [svgWidth, svgWidth]])
-            .on('zoom', zooming);
+            .on("zoom", zooming);
 
           svg.call(zoom);
         }
