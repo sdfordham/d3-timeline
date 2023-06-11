@@ -27,12 +27,6 @@
 			"text": "Romulus"
 		},
 		{
-			"id": "interregnum",
-			"start": -716,
-			"finish": -715,
-			"text": "Interregnum"
-		},
-		{
 			"id": "numa",
 			"start": -715,
 			"finish": -672,
