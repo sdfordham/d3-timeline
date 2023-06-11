@@ -18,5 +18,55 @@
 			"finish": 476,
 			"text": "The Roman Empire"
 		}
+	],
+	"ages": [
+		{
+			"id": "romulus",
+			"start": -753,
+			"finish": -716,
+			"text": "Romulus"
+		},
+		{
+			"id": "interregnum",
+			"start": -715,
+			"finish": -672,
+			"text": "Interregnum"
+		},
+		{
+			"id": "numa",
+			"start": -715,
+			"finish": -672,
+			"text": "Numa Pompilius"
+		},
+		{
+			"id": "tullus",
+			"start": -672,
+			"finish": -640,
+			"text": "Tullus Hostilius"
+		},
+		{
+			"id": "ancus",
+			"start": -640,
+			"finish": -616,
+			"text": "Ancus Marcius"
+		},
+		{
+			"id": "tarquin",
+			"start": -616,
+			"finish": -578,
+			"text": "Tarquinius Priscus"
+		},
+		{
+			"id": "servius",
+			"start": -578,
+			"finish": -534,
+			"text": "Servius Tullius"
+		},
+		{
+			"id": "tarquin-proud",
+			"start": -534,
+			"finish": -509,
+			"text": "Tarquinius Superbus"
+		}
 	]
 }
