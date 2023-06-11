@@ -14,15 +14,20 @@
         res => {
           const svgHeight = 500;
           const svgWidth = 2000;
-          const eraHeight = 75;
-          const erasColorCycle = ["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"];
+
           const font = "Montserrat";
-          const ageYPos = -30;
-          const ageHeight = 15;
-          const ageRounded = 3; 
 
           const eras = res.eras;
+          const eraHeight = 75;
+          const eraTextYPos = -5;
+          const eraColorCycle = ["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f"];
+          
           const ages = res.ages;
+          const ageYPos = -30;
+          const ageHeight = 15;
+          const ageTextYPos = -36.5;
+          const ageColorCycle = ["#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"];
+          const ageRounded = 3; 
 
           var svg = d3.select("body")
             .append("svg")
@@ -44,7 +49,7 @@
             .attr("y", -eraHeight)
             .attr("width", d => xScale(d.finish) - xScale(d.start))
             .attr("height", eraHeight)
-            .attr("fill", (d, i) => erasColorCycle[i % erasColorCycle.length])
+            .attr("fill", (d, i) => eraColorCycle[i % eraColorCycle.length])
             .attr("stroke", "black")
             .attr("stroke-width", 0.025)
             .on("mouseover", function() {
@@ -63,7 +68,7 @@
             .enter()
             .append("text")
             .attr("x", d => xScale(d.start) + 0.5 * (xScale(d.finish) - xScale(d.start)))
-            .attr("y", -5)
+            .attr("y", eraTextYPos)
             .style("text-anchor", "middle")
             .text(d => d.text)
             .attr("font-family", font)
@@ -94,22 +99,38 @@
             .enter()
             .append("path")
             .attr("d", d => roundedRect(xScale(d.start), ageYPos, xScale(d.finish) - xScale(d.start), ageHeight, ageRounded))
-            .attr("fill", (d, i) => erasColorCycle[i % erasColorCycle.length])
-            .attr("fill-opacity", 0.75)
+            .attr("fill", (d, i) => ageColorCycle[i % ageColorCycle.length])
+            .attr("fill-opacity", 0.5)
             .on("mouseover", function() {
               d3.select(this)
-                .attr("fill-opacity", 0.5);
+                .attr("fill-opacity", 0.75);
             })
             .on("mouseout", function() {
               d3.select(this)
-                .attr("fill-opacity", 0.75);
+                .attr("fill-opacity", 0.5);
             });
 
+          var gAgesText = svg.append("g")
+            .attr("class", "ages-text")
+            .selectAll("text")
+            .data(ages)
+            .enter()
+            .append("text")
+            .attr("x", d => xScale(d.start) + 0.5 * (xScale(d.finish) - xScale(d.start)))
+            .attr("y", ageTextYPos)
+            .style("text-anchor", "middle")
+            .text(d => d.text)
+            .attr("font-family", font)
+            .attr("font-size", "3px")
+            .attr("font-weight", "900")
+            .attr("fill", "white");
+          
           function zooming({transform}) {
-            gEras.attr("transform", transform)
-            gErasText.attr("transform", transform)
-            xAxis.attr("transform", transform)
-            ageG.attr("transform", transform)
+            gEras.attr("transform", transform);
+            gErasText.attr("transform", transform);
+            xAxis.attr("transform", transform);
+            ageG.attr("transform", transform);
+            gAgesText.attr("transform", transform);
           }
 
           var zoom = d3.zoom()
